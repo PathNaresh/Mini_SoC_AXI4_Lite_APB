@@ -1,0 +1,31 @@
+## Hierarchical Address Decoding
+
+### System-Level Decode
+
+- Implemented AXI address-based slave selection
+- Routed transactions to:
+  - AXI SRAM
+  - AXI→APB Bridge
+
+### APB-Level Decode
+
+- Implemented APB peripheral decoding
+- Selected:
+  - GPIO
+  - UART
+  - SPI
+
+### Register-Level Decode
+
+- Implemented local register offset decoding
+- Used:
+  PADDR[7:0]
+
+for peripheral register access
+
+### Key Learnings
+
+- Learned multi-level address hierarchy
+- Understood subsystem address partitioning
+- Learned scalable memory-map design
+- Understood local vs global address decoding
