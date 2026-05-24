@@ -1,0 +1,191 @@
+
+================================================================================
+                         FINAL MINI-SOC ARCHITECTURE
+================================================================================
+
+
+                         +--------------------------------+
+                         |        AXI MASTER TB           |
+                         |--------------------------------|
+                         | AXI4-Lite Master Driver        |
+                         | - Generates Reads/Writes       |
+                         | - Scoreboard Checking          |
+                         | - PASS/FAIL Logging            |
+                         +---------------+----------------+
+                                         |
+                                         |
+                                         | AXI4-Lite
+                                         |
+                    =================================================
+                    ||                                             ||
+                    ||           AXI INTERCONNECT                   ||
+                    ||---------------------------------------------||
+                    || Address Decode + Routing Logic              ||
+                    ||                                             ||
+                    || 0x0000_0000 -> AXI SRAM                     ||
+                    || 0x1000_0000 -> AXI->APB Bridge              ||
+                    =================================================
+                               |                         |
+                               |                         |
+                 AXI4-Lite     |                         | AXI4-Lite
+                               |                         |
+                +--------------+--+           +----------+-----------+
+                |   AXI SRAM      |           |    AXI -> APB        |
+                |-----------------|           |       BRIDGE         |
+                | AXI4-Lite Slave |           |----------------------|
+                |                 |           | AXI Slave            |
+                | Internal Memory |           | APB Master           |
+                | Read/Write RAM  |           | Protocol Conversion  |
+                +-----------------+           +----------+-----------+
+                                                         |
+                                                         |
+                                                         | APB3
+                                                         |
+                          ===================================================
+                          ||                                               ||
+                          ||               APB SUBSYSTEM                    ||
+                          ||-----------------------------------------------||
+                          || APB Decoder + Peripheral Select Logic         ||
+                          ===================================================
+                                   |              |              |
+                                   |              |              |
+                          +--------+--+   +-------+---+   +------+------+
+                          |  GPIO IP  |   | UART STUB |   |  SPI STUB   |
+                          |-----------|   |------------|   |-------------|
+                          | APB Slave |   | APB Slave  |   | APB Slave   |
+                          | GPIO_DATA |   | TX/RX Regs |   | TX/RX Regs  |
+                          | GPIO_DIR  |   | STATUS     |   | STATUS      |
+                          +-----------+   +------------+   +-------------+
+
+
+================================================================================
+                              ADDRESS MAP
+================================================================================
+
+AXI ADDRESS MAP
+------------------------------
+
+0x0000_0000 -> 0x0000_FFFF   AXI SRAM
+
+0x1000_0000 -> 0x1000_FFFF   AXI->APB BRIDGE
+
+
+
+APB PERIPHERAL MAP
+------------------------------
+
+0x1000_0000   GPIO
+0x1000_1000   UART
+0x1000_2000   SPI
+
+
+
+GPIO REGISTER MAP
+------------------------------
+
+0x00   GPIO_DATA
+0x04   GPIO_DIR
+
+
+
+UART REGISTER MAP
+------------------------------
+
+0x00   TXDATA
+0x04   RXDATA
+0x08   STATUS
+0x0C   CONTROL
+
+
+
+SPI REGISTER MAP
+------------------------------
+
+0x00   TXDATA
+0x04   RXDATA
+0x08   STATUS
+0x0C   CONTROL
+
+
+
+================================================================================
+                              DATA FLOW
+================================================================================
+
+SRAM ACCESS:
+------------
+
+TB
+ -> AXI INTERCONNECT
+ -> AXI SRAM
+
+
+
+GPIO ACCESS:
+------------
+
+TB
+ -> AXI INTERCONNECT
+ -> AXI->APB BRIDGE
+ -> APB SUBSYSTEM
+ -> GPIO
+
+
+
+UART ACCESS:
+------------
+
+TB
+ -> AXI INTERCONNECT
+ -> AXI->APB BRIDGE
+ -> APB SUBSYSTEM
+ -> UART
+
+
+
+SPI ACCESS:
+------------
+
+TB
+ -> AXI INTERCONNECT
+ -> AXI->APB BRIDGE
+ -> APB SUBSYSTEM
+ -> SPI
+
+
+================================================================================
+                           CURRENT FEATURES
+================================================================================
+
+[¿] AXI4-Lite Master
+[¿] AXI Interconnect
+[¿] AXI SRAM
+[¿] AXI->APB Bridge
+[¿] APB Decoder
+[¿] GPIO Peripheral
+[¿] UART Stub
+[¿] SPI Stub
+[¿] Full-System Verification
+[¿] Waveform Debugging
+[¿] Structured Logging
+[¿] Memory Map Freeze
+[¿] Shared Header Definitions
+
+
+================================================================================
+                           NEXT PHASE OPTIONS
+================================================================================
+
+1. DMA Controller
+2. Interrupt Controller
+3. APB Timer
+4. UART Functional Model
+5. SPI Functional Model
+6. AXI Arbiter
+7. Multiple AXI Masters
+8. Cache Controller
+9. UVM Verification
+10. RISC-V CPU Integration
+
+================================================================================
+
