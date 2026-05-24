@@ -1,0 +1,27 @@
+## FSM-Based Protocol Conversion
+
+### AXI→APB Bridge Design
+
+- Designed bridge using FSM architecture
+- Converted AXI transactions into APB transactions
+- Managed protocol sequencing across multiple cycles
+- Implemented transaction lifecycle management
+
+### FSM Learning
+
+Implemented states:
+- IDLE
+- WRITE_SETUP
+- WRITE_ACCESS
+- WRITE_RESP
+- READ_SETUP
+- READ_ACCESS
+- READ_RESP
+
+### Key Learnings
+
+- Learned state-machine driven protocol handling
+- Understood sequential transaction control
+- Learned protocol synchronization techniques
+- Managed multi-cycle hardware operations
+- Learned clean FSM coding methodology
