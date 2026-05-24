@@ -1,0 +1,267 @@
+FINAL SOC ARCHITECTURE (FROZEN BASELINE):
+
+                +------------------+
+                | AXI MASTER TB    |
+                +--------+---------+
+                         |
+                  AXI Interconnect
+                         |
+       +-----------------+-----------------+
+       |                                   |
+ +-----+------+                    +-------+------+
+ | AXI SRAM   |                    | AXI -> APB    |
+ +------------+                    +-------+------+
+                                           |
+                   +-----------------------+--------------------+
+                   |              |            |                |
+                 GPIO IP       UART IP       SPI IP          DMA CTRL
+
+
+SOC ROADMAP:
+
+PHASE 1 - AXI Basics
+
+PHASE 2 - AXI Interconnect
+
+PHASE 3 - AXI -> APB Bridge
+
+PHASE 4 - GPIO/UART/SPI/DMA peripherals
+
+PHASE 5 - Full-system integration
+
+This progression is extremely logical.
+
+1. FREEZE BUS TYPES
+
+This is the most important decision
+
+| Block          | Bus Type               |
+| -------------- | ---------------------- |
+| AXI MASTER TB  | AXI4-Lite              |
+| AXI SRAM       | AXI4-Lite Slave        |
+| AXI->APB Bridge| AXI slave + APB master |
+| GPIO           | APB Slave              |
+| UART           | APB Slave              |
+| SPI            | APB Slave              |
+| DMA CTRL       | APB Slave              |
+
+2. FREEZE DATA WIDTHS
+
+Keep this consistent everywhere initially
+
+| Signal      | Width  |
+| ----------- | ------ |
+| AXI address | 32-bit |
+| AXI data    | 32-bit |
+| APB address | 32-bit |
+| APB data    | 32-bit |
+
+Why?
+
+avoids conversion logic now
+simpler bridge design
+easier scoreboard reuse
+
+3. FREEZE AXI VERSION
+
+Use: AXI4-Lite
+
+NOT full AXI4 initially.
+
+Why?
+
+single beat only
+no burst complexity
+easier learning
+still teaches VALID/READY properly
+
+Later you can evolve.
+
+4. FREEZE APB VERSION
+
+Use:
+
+APB3-style simple slave
+
+Current GPIO/MEMORY already align closely.
+
+5. FREEZE MEMORY MAP (VERY IMPORTANT)
+
+This avoids future conflicts.
+
+AXI ADDRESS MAP:
+
+           Region	     Address Range Target
+0x0000_0000 -> 0x0000_FFFF	AXI SRAM
+0x1000_0000 -> 0x1000_FFFF	AXI->APB Bridge
+
+APB PERIPHERAL MAP
+
+Behind bridge:
+
+Peripheral	Base Address
+GPIO	        0x1000_0000
+UART	        0x1000_1000
+SPI	        0x1000_2000
+DMA CTRL	0x1000_3000
+
+
+6. FREEZE GPIO REGISTER MAP
+Register	Offset
+GPIO_DATA	0x00
+GPIO_DIR	0x04
+
+
+7. FREEZE UART REGISTER MAP (future)
+Register	Offset
+TXDATA	        0x00
+RXDATA	        0x04
+STATUS	        0x08
+CONTROL	        0x0C
+
+
+8. FREEZE SPI REGISTER MAP (future)
+Register	Offset
+TXDATA    	0x00
+RXDATA	        0x04
+STATUS	        0x08
+CONTROL	        0x0C
+
+
+9. FREEZE DMA CTRL REGISTERS
+Register	Offset
+SRC_ADDR	0x00
+DST_ADDR	0x04
+LENGTH	        0x08
+CONTROL	        0x0C
+STATUS	        0x10
+
+10. FREEZE VERIFICATION STRATEGY
+
+This is equally important.
+
+Component	Verification Style
+AXI Master	active driver
+APB peripherals	passive DUTs
+Scoreboard	reference model compare
+Memory model	shadow reference memory
+Logging	        centralized PASS/FAIL
+
+OUTLINE:
+
+Final_SoC/
+|
+|-- common/
+|
+|-- docs/
+|
+|-- scripts/
+|
+|-- Subsystems/
+|   |- AXI_Basics/
+|   |- AXI_Interconnect/
+|   |- APB_Subsystem/
+|   |- AXI_APB_Bridge/
+|   |- Peripherals/
+|
+|-- Full_System/
+|
+|-- regressions/
+
+FINAL SOC DIRECTORY STRUCTURE (FROZEN)
+
+This is a strong scalable structure for the complete Mini/Final SoC project.
+
+Final_SoC
+|
+|--common
+|    | -axi_defs.svh
+|    | -apb_defs.svh
+|    | -soc_memory_map.svh
+|    | -soc_reg_map.svh
+|    | -tb_defs.svh
+|
+|--docs
+|    | -architecture
+|    | -bus_maps
+|    | -register_maps
+|    | -block_diagrams
+|
+|--scripts
+|    | -run_vcs.sh
+|    | -clean.sh
+|    | -run_regression.sh
+|    | -env_setup.sh
+|
+|--IPs
+|    |
+|    |--axi_sram
+|    |  --rtl
+|    |  --tb
+|    |  --sim
+|    |  --waves
+|    |
+|    |--gpio
+|    |  --rtl
+|    |  --tb
+|    |  --sim
+|    |  --waves
+|    |
+|    |--uart
+|    |  --rtl
+|    |  --tb
+|    |  --sim
+|    |  --waves
+|    |
+|    |--spi
+|    |  --rtl
+|    |  --tb
+|    |  --sim
+|    |  --waves
+|    |
+|    |--dma
+|      --rtl
+|      --tb
+|      --sim
+|      --waves
+|
+|--Subsystems
+|    |
+|    |--AXI_Basics
+|    |  --rtl
+|    |  --tb
+|    |  --sim
+|    |  --waves
+|    |
+|    |--AXI_Interconnect
+|    |  --rtl
+|    |  --tb
+|    |  --sim
+|    |  --waves
+|    |
+|    |-APB_Subsystem
+|    |  --rtl
+|    |  --tb
+|    |  --sim
+|    |  --waves
+|    |
+|    |--AXI_APB_Bridge
+|      --rtl
+|      --tb
+|      --sim
+|      --waves
+|
+|--Full_System
+|   --rtl
+|   --tb
+|   --sim
+|   --waves
+|
+|- regressions
+    --smoke
+    --directed
+    --random
+    --logs
+
+
+
