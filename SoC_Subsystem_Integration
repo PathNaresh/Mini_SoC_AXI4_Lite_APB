@@ -1,0 +1,41 @@
+## SoC Subsystem Integration
+
+### Full SoC Integration
+
+Integrated:
+- AXI Master TB
+- AXI Interconnect
+- AXI SRAM
+- AXI→APB Bridge
+- APB Decoder
+- GPIO Peripheral
+- UART Stub
+- SPI Stub
+
+### Hierarchical Design Learning
+
+- Learned modular RTL integration
+- Understood subsystem connectivity
+- Managed interface signal routing
+- Learned scalable SoC architecture organization
+
+### Shared Infrastructure
+
+Created reusable:
+- axi_defs.svh
+- apb_defs.svh
+- soc_memory_map.svh
+
+### Verification Integration
+
+- Built end-to-end SoC verification flow
+- Verified complete transaction paths
+- Performed subsystem-level testing
+- Developed reusable simulation structure
+
+### Engineering Learning
+
+- Followed phased development methodology
+- Practiced modular design principles
+- Learned scalable directory organization
+- Developed industry-style RTL structure
