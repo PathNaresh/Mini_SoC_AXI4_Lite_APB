@@ -1,0 +1,30 @@
+Phase1 : AXI SRAM
+------------------
+Learned:
+AXI handshakes
+read/write channels
+memory model
+
+
+Phase2 : AXI Interconnect
+---------------------------
+Learned:
+address decoding
+routing
+slave selection
+
+
+Phase3 : AXI -> APB Bridge
+---------------------------
+Learned:
+protocol conversion
+bridge FSM
+AXI/APB interaction
+
+
+Phase4 : APB Peripheral Subsystem
+----------------------------------
+Learned:
+APB decoder
+peripheral muxing
+multi-peripheral architecture
