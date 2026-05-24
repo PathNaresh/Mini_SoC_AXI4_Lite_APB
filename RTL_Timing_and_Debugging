@@ -1,0 +1,34 @@
+## RTL Timing and Debugging
+
+### Timing Understanding
+
+- Learned synchronous RTL behavior
+- Understood posedge-triggered logic operation
+- Learned nonblocking assignment timing behavior
+- Observed signal update ordering
+
+### Debugging Experience
+
+- Debugged APB ACCESS phase timing issue
+- Analyzed protocol failures using waveforms
+- Traced transaction behavior cycle-by-cycle
+- Verified FSM state transitions
+
+### Waveform Debugging
+
+Used:
+- VPD dump generation
+- DVE waveform viewer
+
+Observed:
+- AXI handshakes
+- APB timing
+- FSM behavior
+- peripheral activity
+
+### Logging Improvements
+
+- Added structured transaction logs
+- Improved simulation readability
+- Added PASS/FAIL reporting
+- Learned transaction tracing methodology
