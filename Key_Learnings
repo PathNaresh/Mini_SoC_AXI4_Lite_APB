@@ -1,0 +1,70 @@
+# Key Learnings
+
+## AXI/APB Protocol Understanding
+
+- Learned AXI4-Lite channel architecture
+- Understood VALID/READY handshake mechanism
+- Implemented AXI read/write transactions
+- Learned APB SETUP and ACCESS phases
+- Understood low-bandwidth peripheral bus operation
+- Observed protocol timing behavior using waveforms
+
+---
+
+## FSM-Based Protocol Conversion
+
+- Designed AXI→APB bridge using FSM architecture
+- Implemented protocol state transitions
+- Managed write/read transaction sequencing
+- Learned timing coordination between two bus protocols
+- Understood transaction lifecycle handling
+
+---
+
+## Hierarchical Address Decoding
+
+- Implemented system-level address map
+- Learned peripheral selection using address ranges
+- Understood subsystem-level decoding
+- Learned local register offset decoding
+- Managed AXI and APB address hierarchy cleanly
+
+---
+
+## RTL Timing and Debugging
+
+- Learned nonblocking assignment timing behavior
+- Debugged APB ACCESS phase timing issue
+- Used VPD/DVE waveform debugging
+- Traced protocol transactions cycle-by-cycle
+- Improved debugging methodology using structured logs
+
+---
+
+## SoC Subsystem Integration
+
+- Integrated multiple RTL modules into one SoC
+- Connected AXI interconnect, bridge, SRAM, and peripherals
+- Learned clean module hierarchy organization
+- Built reusable shared definitions infrastructure
+- Developed structured simulation and verification flow
+
+---
+
+## Engineering Methodology
+
+- Followed phased development approach
+- Used modular RTL architecture
+- Standardized directory structure
+- Created reusable header definition files
+- Practiced scalable project organization
+
+---
+
+## Verification Methodology
+
+- Developed directed AXI master testbench
+- Performed end-to-end subsystem validation
+- Added PASS/FAIL transaction checking
+- Verified memory and peripheral accesses
+- Used waveform-driven debug methodology
